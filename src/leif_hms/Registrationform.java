@@ -64,7 +64,7 @@ public class Registrationform extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(220, 220, 220));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("REGISTRATION FORM");
-        jPanel9.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 260, 60));
+        jPanel9.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 260, 60));
 
         Ps.setBackground(new java.awt.Color(220, 220, 220));
         Ps.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
