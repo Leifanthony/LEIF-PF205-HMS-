@@ -148,18 +148,27 @@ public class userProfile extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 289, 100, 30));
+
+        txtEmail.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        txtEmail.setForeground(new java.awt.Color(255, 255, 0));
         jPanel2.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 61, 250, 20));
 
         jLabel5.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 0));
         jLabel5.setText("Email:");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 63, -1, -1));
+
+        txtFirstname.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        txtFirstname.setForeground(new java.awt.Color(255, 255, 0));
         jPanel2.add(txtFirstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 99, 250, 20));
 
         jLabel3.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 0));
         jLabel3.setText("First Name:");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 101, -1, -1));
+
+        txtLastname.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        txtLastname.setForeground(new java.awt.Color(255, 255, 0));
         jPanel2.add(txtLastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 147, 250, 21));
 
         jLabel4.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
@@ -171,8 +180,14 @@ public class userProfile extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 0));
         jLabel7.setText("User Type:");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 186, -1, 30));
-        jPanel2.add(txtStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 244, 230, 20));
-        jPanel2.add(txtUsertype, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 196, 250, 20));
+
+        txtStatus.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        txtStatus.setForeground(new java.awt.Color(255, 255, 0));
+        jPanel2.add(txtStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 230, 20));
+
+        txtUsertype.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        txtUsertype.setForeground(new java.awt.Color(255, 255, 0));
+        jPanel2.add(txtUsertype, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 250, 20));
 
         jLabel8.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 0));
