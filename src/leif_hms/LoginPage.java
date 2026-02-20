@@ -6,7 +6,7 @@
 package leif_hms;
 
 import ADMIN.AdminDashboard;
-import ADMIN.UserDash;
+import ADMIN.UserDash1;
 import config.DataBaseCon;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
@@ -184,7 +184,7 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      String email = jTextField1.getText().trim(); // ✅ FIXED
+       String email = jTextField1.getText().trim(); 
     String password = String.valueOf(jPasswordField1.getPassword()).trim();
 
     if (email.isEmpty() || password.isEmpty()) {
@@ -194,45 +194,32 @@ public class LoginPage extends javax.swing.JFrame {
 
     DataBaseCon conf = new DataBaseCon();
 
-    String sql = "SELECT * FROM tbl_users " +
-                 "WHERE LOWER(TRIM(email))=? " +
-                 "AND TRIM(password)=? " +
-                 "AND LOWER(TRIM(status))=?";
+    // Authenticate the user (active status)
+    String authSql = "SELECT * FROM tbl_users WHERE LOWER(TRIM(email))=? AND TRIM(password)=? AND LOWER(TRIM(status))=?";
+    boolean loginSuccess = conf.authenticate(authSql, email.toLowerCase(), password, "active");
 
-    try {
-        boolean loginSuccess = conf.authenticate(
-                sql,
-                email.toLowerCase(),
-                password,
-                "active"
-        );
+    if (!loginSuccess) {
+        JOptionPane.showMessageDialog(this, "Invalid email or password or inactive account");
+        return;
+    }
 
-        if (!loginSuccess) {
-            JOptionPane.showMessageDialog(this, "Invalid email or password");
-            return;
-        }
+    // Get full user object
+    String userSql = "SELECT * FROM tbl_users WHERE LOWER(TRIM(email))=? AND TRIM(password)=?";
+    DataBaseCon.User user = conf.getUser(userSql, email.toLowerCase(), password);
 
-        // get user type
-        String typeSql = "SELECT type FROM tbl_users WHERE LOWER(TRIM(email))=? AND TRIM(password)=?";
-        ResultSet rs = conf.getUser(typeSql, email.toLowerCase(), password);
+    if (user != null) {
+        String type = user.type.trim();
 
-        if (rs != null && rs.next()) {
-            String type = rs.getString("type").trim();
-
-            if (type.equalsIgnoreCase("ADMIN")) {
-                new AdminDashboard().setVisible(true);
-            } else {
-                new UserDash(email).setVisible(true);
-            }
-
-            this.dispose(); // ✅ close login page
+        if (type.equalsIgnoreCase("ADMIN")) {
+            new AdminDashboard().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "User type not found.");
+            new UserDash1(email).setVisible(true);
         }
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        e.printStackTrace();
+        this.dispose(); // Close login page
+
+    } else {
+        JOptionPane.showMessageDialog(this, "User not found.");
     }
 
     }//GEN-LAST:event_jButton1ActionPerformed
