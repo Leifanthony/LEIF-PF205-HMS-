@@ -14,16 +14,16 @@ public class DataBaseCon {
     // DATABASE CONNECTION
     // =========================
     public static Connection connectDB() throws SQLException, ClassNotFoundException {
+
         Class.forName("org.sqlite.JDBC");
         Connection con = DriverManager.getConnection(DB_URL);
 
-        // WAL mode and busy timeout
         try (Statement stmt = con.createStatement()) {
-            stmt.execute("PRAGMA journal_mode=WAL");  // allows concurrent reads/writes
-            stmt.execute("PRAGMA busy_timeout=5000"); // wait up to 5s if DB locked
+            stmt.execute("PRAGMA journal_mode=WAL");
+            stmt.execute("PRAGMA busy_timeout=5000");
         }
 
-        // Ensure users table exists
+        // Create users table if not exists
         String createUsers = "CREATE TABLE IF NOT EXISTS tbl_users ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "first_name TEXT NOT NULL,"
@@ -38,15 +38,26 @@ public class DataBaseCon {
             stmt.execute(createUsers);
         }
 
+        // You can add other tables like tbl_student creation here if needed
+
         return con;
     }
 
     // =========================
-    // INSERT / UPDATE RECORD (Transaction Safe)
+    // PREPARE STATEMENT
+    // =========================
+    public static PreparedStatement prepareStatement(String sql)
+            throws SQLException, ClassNotFoundException {
+        Connection conn = connectDB();
+        return conn.prepareStatement(sql);
+    }
+
+    // =========================
+    // INSERT / UPDATE RECORD
     // =========================
     public static boolean addRecord(String sql, Object... values) {
         try (Connection conn = connectDB()) {
-            conn.setAutoCommit(false); // start transaction
+            conn.setAutoCommit(false);
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 for (int i = 0; i < values.length; i++) {
                     pstmt.setObject(i + 1, values[i]);
@@ -56,7 +67,7 @@ public class DataBaseCon {
                 return rows > 0;
             } catch (SQLException e) {
                 conn.rollback();
-                System.out.println("Error adding record (rollback): " + e.getMessage());
+                System.out.println("Transaction rolled back: " + e.getMessage());
                 return false;
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -87,14 +98,13 @@ public class DataBaseCon {
     }
 
     // =========================
-    // DISPLAY DATA TO JTable (Safe, CachedRowSet)
+    // DISPLAY DATA TO JTable
     // =========================
     public static void displayData(String sql, JTable table) {
         try (Connection conn = connectDB();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
-            // Use CachedRowSet to disconnect ResultSet from DB
             CachedRowSet crs = new CachedRowSetImpl();
             crs.populate(rs);
             table.setModel(DbUtils.resultSetToTableModel(crs));
@@ -128,18 +138,53 @@ public class DataBaseCon {
     }
 
     // =========================
-    // FETCH USER AS OBJECT
+    // 🔥 GET DATA (For CustomerPage) - Safe with CachedRowSet
     // =========================
-    public static User getUser(String sql, Object... values) {
+    public CachedRowSet getData(String sql) throws SQLException {
         try (Connection conn = connectDB();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pst = conn.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
 
+            CachedRowSet crs = new CachedRowSetImpl();
+            crs.populate(rs);
+            return crs; // Can safely be used in JTable
+        } catch (Exception e) {
+            throw new SQLException("Error fetching data: " + e.getMessage());
+        }
+    }
+
+    // =========================
+    // 🔥 DELETE DATA (For CustomerPage)
+    // =========================
+    public void deleteData(int id, String table, String column) {
+        String sql = "DELETE FROM " + table + " WHERE " + column + " = ?";
+        try (Connection conn = connectDB();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            System.out.println("Record deleted successfully!");
+
+        } catch (Exception e) {
+            System.out.println("Delete Error: " + e.getMessage());
+        }
+    }
+
+    // =========================
+    // 🔥 GET USER BY SQL + PARAMETERS
+    // =========================
+    public User getUser(String sql, Object... values) {
+        try (Connection conn = connectDB();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            // Set parameters
             for (int i = 0; i < values.length; i++) {
-                pstmt.setObject(i + 1, values[i]);
+                pst.setObject(i + 1, values[i]);
             }
 
-            try (ResultSet rs = pstmt.executeQuery()) {
+            try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
+                    byte[] picture = rs.getBytes("idpicture"); // can be null
                     return new User(
                             rs.getInt("id"),
                             rs.getString("first_name"),
@@ -148,7 +193,7 @@ public class DataBaseCon {
                             rs.getString("password"),
                             rs.getString("type"),
                             rs.getString("status"),
-                            rs.getBytes("idpicture")
+                            picture
                     );
                 }
             }
@@ -156,19 +201,22 @@ public class DataBaseCon {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Error fetching user: " + e.getMessage());
         }
-        return null;
+        return null; // return null if not found
     }
 
     // =========================
-    // USER OBJECT
+    // USER MODEL
     // =========================
     public static class User {
         public int id;
         public String firstName, lastName, email, password, type, status;
         public byte[] idPicture;
 
-        public User(int id, String firstName, String lastName, String email, String password,
-                    String type, String status, byte[] idPicture) {
+        public User(int id, String firstName, String lastName,
+                    String email, String password,
+                    String type, String status,
+                    byte[] idPicture) {
+
             this.id = id;
             this.firstName = firstName;
             this.lastName = lastName;

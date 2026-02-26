@@ -118,7 +118,7 @@ public class UserDash1 extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Constantia", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 0));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("CUSTOMER CHECK IN");
+        jLabel5.setText("BOOKING");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
@@ -153,7 +153,7 @@ public class UserDash1 extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Constantia", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 0));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("CUSTOMER CHECK OUT");
+        jLabel7.setText("MANAGE BOOKING");
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel7MouseClicked(evt);
@@ -345,7 +345,7 @@ public class UserDash1 extends javax.swing.JFrame {
     }
 
     this.dispose();
-    new CustomerCheckIn(loggedInUser).setVisible(true);
+    new CustomerBooking(loggedInUser).setVisible(true);
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
@@ -354,8 +354,6 @@ public class UserDash1 extends javax.swing.JFrame {
         return;
     }
 
-    this.dispose();
-    new CustomerCheckOut(loggedInUser).setVisible(true);
     }//GEN-LAST:event_jLabel7MouseClicked
 
     /**

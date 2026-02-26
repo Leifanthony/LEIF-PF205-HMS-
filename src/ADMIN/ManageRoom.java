@@ -165,44 +165,25 @@ public class ManageRoom extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       String roomNumber = jTextField1.getText().trim();
+       int roomNumber = getNextRoomNumber();   // ✅ AUTO GENERATED
     String roomType = jComboBox1.getSelectedItem().toString();
     String bed = jComboBox2.getSelectedItem().toString();
     String priceText = jTextField2.getText().trim();
     String status = "Available";
 
-    if (roomNumber.isEmpty() || priceText.isEmpty()) {
+    if (priceText.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill all fields!");
         return;
     }
 
     try {
         double price = Double.parseDouble(priceText);
-
         Connection con = DataBaseCon.connectDB();
 
-        // ✅ CHECK DUPLICATE ROOM
-        String checkSql = "SELECT * FROM rooms WHERE room_number=?";
-        PreparedStatement checkPst = con.prepareStatement(checkSql);
-        checkPst.setString(1, roomNumber);
-        ResultSet checkRs = checkPst.executeQuery();
-
-        if (checkRs.next()) {
-            JOptionPane.showMessageDialog(this, "Room number already exists!");
-            checkRs.close();
-            checkPst.close();
-            con.close();
-            return;
-        }
-
-        checkRs.close();
-        checkPst.close();
-
-        // ✅ INSERT ROOM
         String sql = "INSERT INTO rooms (room_number, room_type, bed_type, price, status) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement pst = con.prepareStatement(sql);
 
-        pst.setString(1, roomNumber);
+        pst.setInt(1, roomNumber);   
         pst.setString(2, roomType);
         pst.setString(3, bed);
         pst.setDouble(4, price);
@@ -210,15 +191,13 @@ public class ManageRoom extends javax.swing.JFrame {
 
         pst.executeUpdate();
 
-        JOptionPane.showMessageDialog(this, "Room Added Successfully!");
+        JOptionPane.showMessageDialog(this, "Room " + roomNumber + " Added Successfully!");
 
-        // Clear fields
-        jTextField1.setText("");
         jTextField2.setText("");
         jComboBox1.setSelectedIndex(0);
         jComboBox2.setSelectedIndex(0);
 
-        loadRooms(); // refresh table
+        loadRooms();
 
         pst.close();
         con.close();
@@ -311,5 +290,32 @@ public class ManageRoom extends javax.swing.JFrame {
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, e.getMessage());
     }
-    }
 }
+
+
+
+private int getNextRoomNumber() {
+    int nextNumber = 101;
+
+    try {
+        Connection con = DataBaseCon.connectDB();
+        String sql = "SELECT IFNULL(MAX(room_number), 100) + 1 FROM rooms";
+        PreparedStatement pst = con.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            nextNumber = rs.getInt(1);
+        }
+
+        rs.close();
+        pst.close();
+        con.close();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+
+    return nextNumber;
+}
+
+}  

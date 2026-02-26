@@ -194,7 +194,7 @@ public class Registrationform extends javax.swing.JFrame {
             pst.setString(3, email);
             pst.setString(4, password);
             pst.setString(5, "USER");
-            pst.setString(6, "ACTIVE");
+            pst.setString(6, "INACTIVE");
 
             pst.executeUpdate();
 

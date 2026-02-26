@@ -276,9 +276,9 @@ public class AdminDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        usersForm uf = new usersForm(); // default constructor opens empty form
-    uf.setVisible(true);
-    uf.setLocationRelativeTo(null);
+            CustomerPage cp = new CustomerPage(); // make sure this is the correct class
+       cp.setVisible(true);
+       cp.setLocationRelativeTo(null);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
