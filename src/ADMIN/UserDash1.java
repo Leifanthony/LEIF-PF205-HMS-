@@ -354,6 +354,9 @@ public class UserDash1 extends javax.swing.JFrame {
         return;
     }
 
+    this.dispose(); // close dashboard
+    new ManageBooking().setVisible(true); // open ManageBooking frame
+    
     }//GEN-LAST:event_jLabel7MouseClicked
 
     /**

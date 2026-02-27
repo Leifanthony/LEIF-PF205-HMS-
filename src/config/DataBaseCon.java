@@ -38,8 +38,6 @@ public class DataBaseCon {
             stmt.execute(createUsers);
         }
 
-        // You can add other tables like tbl_student creation here if needed
-
         return con;
     }
 
@@ -53,25 +51,58 @@ public class DataBaseCon {
     }
 
     // =========================
-    // INSERT / UPDATE RECORD
+    // INSERT RECORD
     // =========================
     public static boolean addRecord(String sql, Object... values) {
         try (Connection conn = connectDB()) {
             conn.setAutoCommit(false);
+
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 for (int i = 0; i < values.length; i++) {
                     pstmt.setObject(i + 1, values[i]);
                 }
+
                 int rows = pstmt.executeUpdate();
                 conn.commit();
                 return rows > 0;
+
             } catch (SQLException e) {
                 conn.rollback();
                 System.out.println("Transaction rolled back: " + e.getMessage());
                 return false;
             }
+
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Error adding record: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // =========================
+    // 🔥 UPDATE RECORD (NEW)
+    // =========================
+    public static boolean updateRecord(String sql, Object... values) {
+        try (Connection conn = connectDB()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                for (int i = 0; i < values.length; i++) {
+                    pstmt.setObject(i + 1, values[i]);
+                }
+
+                int rows = pstmt.executeUpdate();
+                conn.commit();
+                return rows > 0;
+
+            } catch (SQLException e) {
+                conn.rollback();
+                System.out.println("Update rolled back: " + e.getMessage());
+                return false;
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Update Error: " + e.getMessage());
             return false;
         }
     }
@@ -138,7 +169,7 @@ public class DataBaseCon {
     }
 
     // =========================
-    // 🔥 GET DATA (For CustomerPage) - Safe with CachedRowSet
+    // GET DATA (Safe CachedRowSet)
     // =========================
     public CachedRowSet getData(String sql) throws SQLException {
         try (Connection conn = connectDB();
@@ -147,14 +178,15 @@ public class DataBaseCon {
 
             CachedRowSet crs = new CachedRowSetImpl();
             crs.populate(rs);
-            return crs; // Can safely be used in JTable
+            return crs;
+
         } catch (Exception e) {
             throw new SQLException("Error fetching data: " + e.getMessage());
         }
     }
 
     // =========================
-    // 🔥 DELETE DATA (For CustomerPage)
+    // DELETE DATA
     // =========================
     public void deleteData(int id, String table, String column) {
         String sql = "DELETE FROM " + table + " WHERE " + column + " = ?";
@@ -171,20 +203,20 @@ public class DataBaseCon {
     }
 
     // =========================
-    // 🔥 GET USER BY SQL + PARAMETERS
+    // GET USER BY SQL
     // =========================
     public User getUser(String sql, Object... values) {
         try (Connection conn = connectDB();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            // Set parameters
             for (int i = 0; i < values.length; i++) {
                 pst.setObject(i + 1, values[i]);
             }
 
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    byte[] picture = rs.getBytes("idpicture"); // can be null
+                    byte[] picture = rs.getBytes("idpicture");
+
                     return new User(
                             rs.getInt("id"),
                             rs.getString("first_name"),
@@ -201,7 +233,7 @@ public class DataBaseCon {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Error fetching user: " + e.getMessage());
         }
-        return null; // return null if not found
+        return null;
     }
 
     // =========================

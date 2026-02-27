@@ -93,14 +93,14 @@
               <Color blue="dc" green="dc" red="dc" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="New User? click here to login"/>
+            <Property name="text" type="java.lang.String" value="New User? click here to REGISTER"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel5MouseClicked"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="100" y="460" width="-1" height="-1"/>
+              <AbsoluteConstraints x="80" y="460" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
