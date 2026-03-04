@@ -161,23 +161,19 @@ public int FileExistenceChecker(String path){
         st_fname = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         st_lname = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        female = new javax.swing.JRadioButton();
-        male = new javax.swing.JRadioButton();
         jLabel10 = new javax.swing.JLabel();
         st_status = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        st_address = new javax.swing.JTextArea();
-        jLabel12 = new javax.swing.JLabel();
         st_id = new javax.swing.JTextField();
-        st_contact = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         image = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         browse = new javax.swing.JLabel();
+        st_status1 = new javax.swing.JComboBox<>();
+        jLabel15 = new javax.swing.JLabel();
         browse1 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jPasswordField1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -233,13 +229,13 @@ public int FileExistenceChecker(String path){
         });
         add.add(st_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 150, 20));
 
-        jPanel1.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 410, 210, 40));
+        jPanel1.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 400, 210, 40));
 
         st_email.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         st_email.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         st_email.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         st_email.setOpaque(false);
-        jPanel1.add(st_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 130, 210, 30));
+        jPanel1.add(st_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, 210, 30));
 
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 0));
@@ -260,36 +256,13 @@ public int FileExistenceChecker(String path){
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 0));
         jLabel8.setText("Status:");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 90, 30));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 50, 30));
 
         st_lname.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         st_lname.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         st_lname.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         st_lname.setOpaque(false);
         jPanel1.add(st_lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 190, 210, 30));
-
-        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel9.setText("Gender:");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 90, 30));
-
-        female.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        female.setText("FEMALE");
-        female.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                femaleActionPerformed(evt);
-            }
-        });
-        jPanel1.add(female, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 240, 100, -1));
-
-        male.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        male.setText("MALE");
-        male.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maleActionPerformed(evt);
-            }
-        });
-        jPanel1.add(male, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, 90, -1));
 
         jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 0));
@@ -303,23 +276,12 @@ public int FileExistenceChecker(String path){
                 st_statusActionPerformed(evt);
             }
         });
-        jPanel1.add(st_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, 210, 30));
+        jPanel1.add(st_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 400, 210, 30));
 
         jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel11.setText("Email:");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, 70, 30));
-
-        st_address.setColumns(20);
-        st_address.setRows(5);
-        jScrollPane1.setViewportView(st_address);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, 210, 110));
-
-        jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel12.setText("Address:");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(53, 340, 90, 30));
+        jLabel11.setText("Password:");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, 70, 30));
 
         st_id.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         st_id.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -327,17 +289,6 @@ public int FileExistenceChecker(String path){
         st_id.setEnabled(false);
         st_id.setOpaque(false);
         jPanel1.add(st_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 210, 30));
-
-        st_contact.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        st_contact.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        st_contact.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        st_contact.setOpaque(false);
-        jPanel1.add(st_contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 90, 210, 30));
-
-        jLabel14.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel14.setText("Contact:");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 70, 30));
 
         jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -364,17 +315,19 @@ public int FileExistenceChecker(String path){
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 190, 210, 180));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 160, 210, 180));
 
-        jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel13.setText("Image:");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 190, 70, 30));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("Image");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 110, 220, 30));
 
         browse.setBackground(new java.awt.Color(153, 153, 255));
         browse.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -386,7 +339,21 @@ public int FileExistenceChecker(String path){
                 browseMouseClicked(evt);
             }
         });
-        jPanel1.add(browse, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 380, 210, 20));
+        jPanel1.add(browse, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 360, 210, 20));
+
+        st_status1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        st_status1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMIN", "USER" }));
+        st_status1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                st_status1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(st_status1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, 210, 30));
+
+        jLabel15.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 0));
+        jLabel15.setText("Type:");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 90, 30));
 
         browse1.setBackground(new java.awt.Color(153, 153, 255));
         browse1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -397,7 +364,13 @@ public int FileExistenceChecker(String path){
                 browse1MouseClicked(evt);
             }
         });
-        jPanel1.add(browse1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 380, 210, 20));
+        jPanel1.add(browse1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 340, 210, 20));
+
+        jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 0));
+        jLabel12.setText("Email:");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 70, 30));
+        jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, 210, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -426,93 +399,77 @@ public int FileExistenceChecker(String path){
         close();
     }//GEN-LAST:event_closeMouseClicked
 
-    private void maleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleActionPerformed
-        female.setSelected(false);
-        if(male.isSelected()){
-            gender = "Male";
-        }else{
-            gender = null;
-        }
-    }//GEN-LAST:event_maleActionPerformed
-
-    private void femaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_femaleActionPerformed
-        male.setSelected(false);
-        if(female.isSelected()){
-            gender = "Female";
-        }else{
-            gender = null;
-        }
-    }//GEN-LAST:event_femaleActionPerformed
-
     private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
-        action = "Add"; // Ensure action is set
+        String idText = st_id.getText().trim();
+    int id = -1; // default value if parsing fails
 
-    if ("Add".equals(action)) {
-
-        // FIELD VALIDATION
-        if (st_fname.getText().trim().isEmpty() || 
-            st_lname.getText().trim().isEmpty() || 
-            st_email.getText().trim().isEmpty()) {
-
-            JOptionPane.showMessageDialog(null, "Please fill all required fields!");
+    if (!idText.isEmpty()) {
+        try {
+            id = Integer.parseInt(idText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid Customer ID!");
             return;
         }
+    }
 
-        int result = 0;
+    try {
+        Connection conn = DataBaseCon.connectDB();
 
-        try {
-            Connection conn = DataBaseCon.connectDB();
+        // ================= ADD =================
+        if ("Add".equals(action)) {
 
-            String sql = "INSERT INTO tbl_users "
-                    + "(first_name, last_name, email, password, type, status, idpicture) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO tbl_users(first_name, last_name, email, password, type, status) VALUES(?,?,?,?,?,?)";
             PreparedStatement pst = conn.prepareStatement(sql);
 
             pst.setString(1, st_fname.getText());
             pst.setString(2, st_lname.getText());
             pst.setString(3, st_email.getText());
-            pst.setString(4, "defaultPassword");
-            pst.setString(5, "Customer");
+            pst.setString(4, new String(jPasswordField1.getPassword()));
+            pst.setString(5, st_status1.getSelectedItem().toString());
             pst.setString(6, st_status.getSelectedItem().toString());
 
-            if (!destination.isEmpty()) {
-                pst.setString(7, destination);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Record Added Successfully!");
+            pst.close();
+        }
+
+        // ================= UPDATE =================
+        else if ("Update".equals(action)) {
+
+            if (id == -1) { // no valid ID
+                JOptionPane.showMessageDialog(null, "No customer selected!");
+                return;
+            }
+
+            String sql = "UPDATE tbl_users SET first_name=?, last_name=?, email=?, password=?, type=?, status=? WHERE id=?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            pst.setString(1, st_fname.getText());
+            pst.setString(2, st_lname.getText());
+            pst.setString(3, st_email.getText());
+            pst.setString(4, new String(jPasswordField1.getPassword()));
+            pst.setString(5, st_status1.getSelectedItem().toString());
+            pst.setString(6, st_status.getSelectedItem().toString());
+            pst.setInt(7, id); // pass int, not string
+
+            int rows = pst.executeUpdate();
+
+            if (rows > 0) {
+                JOptionPane.showMessageDialog(null, "Record Updated Successfully!");
             } else {
-                pst.setString(7, null);
+                JOptionPane.showMessageDialog(null, "Update Failed!");
             }
 
-            if (!destination.isEmpty()) {
-    try {
-        File sourceFile = new File(path);
-        File destFile = new File(destination);
-
-        Files.copy(sourceFile.toPath(),
-                   destFile.toPath(),
-                   StandardCopyOption.REPLACE_EXISTING);
-
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Error saving image file!");
-        return;
-    }
-            }
-            
-            result = pst.executeUpdate();
-            
-
-            conn.close();
-
-        } catch (SQLException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error saving data: " + ex.getMessage());
-            return;
-        }
-
-        if (result == 1) {
-            JOptionPane.showMessageDialog(null, "Successfully Saved!");
-            close();
+            pst.close();
         } else {
-            JOptionPane.showMessageDialog(null, "Saving Data Failed!");
+            JOptionPane.showMessageDialog(null, "Action not set!");
         }
+
+        conn.close();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage());
+      
     }
     }//GEN-LAST:event_addMouseClicked
 
@@ -553,28 +510,6 @@ public int FileExistenceChecker(String path){
         // TODO add your handling code here:
     }//GEN-LAST:event_imageMouseClicked
 
-    private void browse1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_browse1MouseClicked
-                JFileChooser fileChooser = new JFileChooser();
-
-    FileNameExtensionFilter filter =
-            new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg");
-    fileChooser.setFileFilter(filter);
-
-    int returnValue = fileChooser.showOpenDialog(null);
-
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-
-        selectedFile = fileChooser.getSelectedFile();
-        path = selectedFile.getAbsolutePath();
-
-        // Set destination folder inside project
-        destination = "src/images/" + selectedFile.getName();
-
-        // Show image in label
-        image.setIcon(ResizeImage(path, null, image));
-    }
-    }//GEN-LAST:event_browse1MouseClicked
-
     private void st_labelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_st_labelMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_st_labelMouseClicked
@@ -582,6 +517,32 @@ public int FileExistenceChecker(String path){
     private void st_statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_st_statusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_st_statusActionPerformed
+
+    private void st_status1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_st_status1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_st_status1ActionPerformed
+
+    private void browse1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_browse1MouseClicked
+        JFileChooser fileChooser = new JFileChooser();
+
+        FileNameExtensionFilter filter =
+        new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg");
+        fileChooser.setFileFilter(filter);
+
+        int returnValue = fileChooser.showOpenDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+
+            selectedFile = fileChooser.getSelectedFile();
+            path = selectedFile.getAbsolutePath();
+
+            // Set destination folder inside project
+            destination = "src/images/" + selectedFile.getName();
+
+            // Show image in label
+            image.setIcon(ResizeImage(path, null, image));
+        }
+    }//GEN-LAST:event_browse1MouseClicked
     
     /**
      * @param args the command line arguments
@@ -622,33 +583,29 @@ public int FileExistenceChecker(String path){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel add;
     public javax.swing.JLabel browse;
-    public javax.swing.JLabel browse1;
+    private javax.swing.JLabel browse1;
     private java.awt.Canvas canvas1;
     private javax.swing.JLabel close;
-    public javax.swing.JRadioButton female;
     public javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JRadioButton male;
-    public javax.swing.JTextArea st_address;
-    public javax.swing.JTextField st_contact;
+    private javax.swing.JPasswordField jPasswordField1;
     public javax.swing.JTextField st_email;
     public javax.swing.JTextField st_fname;
     public javax.swing.JTextField st_id;
     public javax.swing.JLabel st_label;
     public javax.swing.JTextField st_lname;
     public javax.swing.JComboBox<String> st_status;
+    public javax.swing.JComboBox<String> st_status1;
     // End of variables declaration//GEN-END:variables
 }

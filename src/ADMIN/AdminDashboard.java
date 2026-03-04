@@ -292,7 +292,9 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseExited
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-       
+    CustomerDetailBills Cdb = new CustomerDetailBills ();
+    Cdb.setVisible(true);
+    this.dispose ();
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered

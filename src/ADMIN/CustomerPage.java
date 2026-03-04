@@ -4,6 +4,7 @@
     import java.awt.Color;
     import java.sql.ResultSet;
     import java.sql.SQLException;
+import java.util.regex.Pattern;
     import javax.swing.JFrame;
     import javax.swing.JOptionPane;
     import javax.swing.RowFilter;
@@ -27,23 +28,32 @@
         }
 
         public void displayData() {
-            try {
+           try {
         DataBaseCon dbc = new DataBaseCon();
         ResultSet rs = dbc.getData(
             "SELECT id, first_name, last_name, email, type, status FROM tbl_users"
         );
+
         customer_table.setModel(DbUtils.resultSetToTableModel(rs));
         rs.close();
+
     } catch (SQLException ex) {
-        System.out.println("Errors: " + ex.getMessage());
+        ex.printStackTrace(); // show real error
     }
         }
 
         public void searchTable() {
             DefaultTableModel model = (DefaultTableModel) customer_table.getModel();
-            TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(model);
-            customer_table.setRowSorter(tr);
-            tr.setRowFilter(RowFilter.regexFilter(search.getText().trim()));
+    TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(model);
+    customer_table.setRowSorter(tr);
+
+    // ✅ Safe search handling
+    String text = search.getText().trim();
+    if (text.length() == 0) {
+        tr.setRowFilter(null);
+    } else {
+        tr.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
+    }
         }
 
     @SuppressWarnings("unchecked")
@@ -152,7 +162,7 @@
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 0));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("EDIT");
+        jLabel8.setText("UPDATE");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -277,14 +287,12 @@
     }//GEN-LAST:event_search_buttonMouseExited
 
     private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
-            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        if (mainFrame != null) mainFrame.dispose();
-
-        CustomerForm ctf = new CustomerForm();
-        ctf.setVisible(true);
-        ctf.action = "Add";
-        ctf.st_label.setText("SAVE");
-        ctf.browse.setVisible(false);
+            // Open CustomerForm without closing main page
+    CustomerForm ctf = new CustomerForm();
+    ctf.setVisible(true);
+    ctf.action = "Add";
+    ctf.st_label.setText("SAVE");
+    ctf.browse.setVisible(false);
     }//GEN-LAST:event_addMouseClicked
 
     private void addMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseEntered
@@ -308,51 +316,56 @@
     }//GEN-LAST:event_refreshMouseClicked
 
     private void editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMouseClicked
-       int rowIndex = customer_table.getSelectedRow();
+       int viewRow = customer_table.getSelectedRow();
 
-    if (rowIndex < 0) {
+    if (viewRow < 0) {
         JOptionPane.showMessageDialog(null, "Please Select an Item!");
         return;
     }
 
+    int modelRow = customer_table.convertRowIndexToModel(viewRow);
     TableModel model = customer_table.getModel();
-    String id = model.getValueAt(rowIndex, 0).toString();
+    String id = model.getValueAt(modelRow, 0).toString();
 
     CustomerForm stf = new CustomerForm();
+stf.setVisible(true);
+
+try {
+    DataBaseCon dbc = new DataBaseCon();
+    ResultSet rs = dbc.getData("SELECT * FROM tbl_users WHERE id = " + id);
+
+    if (rs.next()) {
+
+    stf.st_id.setText(rs.getString("id"));
+    stf.st_fname.setText(rs.getString("first_name"));
+    stf.st_lname.setText(rs.getString("last_name"));
+
+    String email = rs.getString("email");
+    stf.st_email.setText(email != null ? email : "");
+
+    stf.st_status1.setSelectedItem(rs.getString("type"));
+    stf.st_status.setSelectedItem(rs.getString("status"));
 
     try {
-        DataBaseCon dbc = new DataBaseCon();
-        ResultSet rs = dbc.getData("SELECT * FROM tbl_users WHERE id = " + id);
-
-        if (rs.next()) {
-
-            stf.st_id.setText(rs.getString("id"));
-            stf.st_fname.setText(rs.getString("first_name"));
-            stf.st_lname.setText(rs.getString("last_name"));
-            stf.st_email.setText(rs.getString("email"));
-            stf.st_status.setSelectedItem(rs.getString("status"));
-       
-            // Load image from BLOB
-            byte[] imgBytes = rs.getBytes("idpicture");
-            if (imgBytes != null) {
-                stf.image.setIcon(stf.ResizeImage(null, imgBytes, stf.image));
-            }
-
-            stf.action = "Update";
-            stf.st_label.setText("UPDATE");
-            stf.setVisible(true);
-
-            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            if (mainFrame != null) {
-                mainFrame.dispose();
-            }
+        byte[] imgBytes = rs.getBytes("idpicture");
+        if (imgBytes != null && imgBytes.length > 0) {
+            stf.image.setIcon(stf.ResizeImage(null, imgBytes, stf.image));
+        } else {
+            stf.image.setIcon(null);
         }
-
-        rs.close();
-
-    } catch (SQLException e) {
-        System.out.println("Database Error: " + e.getMessage());
+    } catch (Exception e) {
+        stf.image.setIcon(null);
     }
+
+    stf.action = "Update";
+    stf.st_label.setText("UPDATE");
+    }
+
+    rs.close();
+
+} catch (SQLException e) {
+    e.printStackTrace();
+}
     }//GEN-LAST:event_editMouseClicked
 
     private void editMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMouseEntered
@@ -364,29 +377,29 @@
     }//GEN-LAST:event_editMouseExited
 
     private void deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseClicked
-        int rowIndex = customer_table.getSelectedRow();
-
-    if (rowIndex < 0) {
+        int viewRow = customer_table.getSelectedRow();
+    if (viewRow < 0) {
         JOptionPane.showMessageDialog(null, "Please select data first from the table!");
         return;
     }
 
+    int modelRow = customer_table.convertRowIndexToModel(viewRow);
     TableModel model = customer_table.getModel();
-    String id = model.getValueAt(rowIndex, 0).toString();
+    int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString()); // ensure INTEGER type
 
     int confirm = JOptionPane.showConfirmDialog(null,
-            "Are you sure to delete ID: " + id,
-            "Confirm Delete",
-            JOptionPane.YES_NO_OPTION);
+        "Are you sure to delete ID: " + id,
+        "Confirm Delete",
+        JOptionPane.YES_NO_OPTION
+    );
 
     if (confirm == JOptionPane.YES_OPTION) {
-        try {
-            DataBaseCon dbc = new DataBaseCon();
-            dbc.deleteData(Integer.parseInt(id), "tbl_users", "id");
+        boolean success = DataBaseCon.deleteData("tbl_users", "id", id); // type-safe delete
+        if(success){
             displayData();
             JOptionPane.showMessageDialog(null, "Record Deleted Successfully!");
-        } catch (Exception e) {
-            System.out.println("Error deleting record: " + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to delete record!");
         }
     }
     }//GEN-LAST:event_deleteMouseClicked
@@ -400,7 +413,7 @@ searchTable();
     }//GEN-LAST:event_search_buttonMouseClicked
 
     private void customer_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customer_tableMouseClicked
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_customer_tableMouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked

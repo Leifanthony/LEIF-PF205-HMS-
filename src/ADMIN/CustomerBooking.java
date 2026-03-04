@@ -9,9 +9,7 @@ import config.DataBaseCon;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -34,7 +32,7 @@ public class CustomerBooking extends javax.swing.JFrame {
 
         // Only attach listener after combo box is filled
         jComboBox5.addActionListener(e -> {
-            if (jComboBox5.getItemCount() > 0) loadPrice();
+        if (jComboBox5.getItemCount() > 0) loadRoomDetails();
         });
 
         // Auto-fill today's date in check-in field
@@ -66,12 +64,9 @@ public class CustomerBooking extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -81,6 +76,7 @@ public class CustomerBooking extends javax.swing.JFrame {
         jComboBox5 = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
+        jTextField10 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -136,11 +132,6 @@ public class CustomerBooking extends javax.swing.JFrame {
         jLabel8.setText("ADDRESS");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
         jPanel2.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 160, 30));
-
-        jLabel9.setFont(new java.awt.Font("Constantia", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 0));
-        jLabel9.setText("CHECK OUT DATE ");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 70, -1, -1));
         jPanel2.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 90, 170, 30));
 
         jLabel10.setFont(new java.awt.Font("Constantia", 1, 14)); // NOI18N
@@ -148,21 +139,15 @@ public class CustomerBooking extends javax.swing.JFrame {
         jLabel10.setText("BED");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 40, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SINGLE", "DOUBLE", "SUITE" }));
-        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 170, 30));
-
         jLabel11.setFont(new java.awt.Font("Constantia", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 0));
         jLabel11.setText("ROOM TYPE");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, -1, -1));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "NON AC" }));
-        jPanel2.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 170, 30));
-
         jLabel12.setFont(new java.awt.Font("Constantia", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 0));
         jLabel12.setText("PRICE");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, -1, -1));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 70, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(204, 204, 204));
         jButton1.setForeground(new java.awt.Color(51, 51, 51));
@@ -177,7 +162,7 @@ public class CustomerBooking extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 270, 100, 30));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 100, 30));
 
         jButton2.setBackground(new java.awt.Color(204, 204, 204));
         jButton2.setForeground(new java.awt.Color(51, 51, 51));
@@ -187,7 +172,7 @@ public class CustomerBooking extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 200, 120, 40));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 160, 120, 40));
 
         jButton3.setBackground(new java.awt.Color(204, 204, 204));
         jButton3.setForeground(new java.awt.Color(51, 51, 51));
@@ -197,13 +182,13 @@ public class CustomerBooking extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, 100, 30));
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 100, 30));
 
         jLabel14.setFont(new java.awt.Font("Constantia", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 0));
         jLabel14.setText("Room Number");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, -1, -1));
-        jPanel2.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 150, 190, 30));
+        jPanel2.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 100, 190, 30));
 
         jPanel2.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, 190, 30));
 
@@ -211,7 +196,8 @@ public class CustomerBooking extends javax.swing.JFrame {
         jLabel15.setForeground(new java.awt.Color(255, 255, 0));
         jLabel15.setText("CHECK IN DATE (TODAY)");
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, -1, -1));
-        jPanel2.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 190, 30));
+        jPanel2.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, 170, 30));
+        jPanel2.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 170, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 680, 340));
 
@@ -266,46 +252,28 @@ public class CustomerBooking extends javax.swing.JFrame {
     String email = jTextField4.getText().trim();
     String idProof = jTextField5.getText().trim();
     String address = jTextField6.getText().trim();
-    String checkinStr = jTextField7.getText().trim();
-    String checkoutStr = jTextField8.getText().trim();
-    String bed = jComboBox2.getSelectedItem().toString();
-    String roomType = jComboBox3.getSelectedItem().toString();
+    String checkinStr = new SimpleDateFormat("yyyy-MM-dd")
+        .format(new java.util.Date());
+    String bed = jTextField10.getText().trim();
+    String roomType = jTextField8.getText().trim();
     String roomNumber = jComboBox5.getSelectedItem() != null ? jComboBox5.getSelectedItem().toString() : "";
     String price = jTextField9.getText().trim();
 
     // ================= VALIDATION =================
     if (name.isEmpty() || mobile.isEmpty() || nationality.isEmpty() ||
         email.isEmpty() || idProof.isEmpty() || address.isEmpty() ||
-        checkinStr.isEmpty() || checkoutStr.isEmpty() ||
         roomNumber.isEmpty() || price.isEmpty()) {
 
         JOptionPane.showMessageDialog(this, "Please fill all fields!");
         return;
     }
 
-    try {
-
-    // Convert String to Date for validation only
-    java.sql.Date checkinDate = java.sql.Date.valueOf(checkinStr);
-    java.sql.Date checkoutDate = java.sql.Date.valueOf(checkoutStr);
-    java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
-
-    // ❌ Check-in cannot be in the past
-    if (checkinDate.before(today)) {
-        JOptionPane.showMessageDialog(this, "Check-in date cannot be in the past!");
-        return;
-    }
-
-    // ❌ Checkout must be after checkin
-    if (!checkoutDate.after(checkinDate)) {
-        JOptionPane.showMessageDialog(this, "Checkout date must be after Check-in date!");
-        return;
-    }
-
+    try{
+        
     String insertSql = "INSERT INTO customer_checkin "
-            + "(room_number, name, mobile_no, nationality, gender, email, id_proof, address, "
-            + "checkin_date, checkout_date, bed_type, room_type, price, status) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        + "(room_number, name, mobile_no, nationality, gender, email, id_proof, address, "
+        + "checkin_date, bed_type, room_type, price, status) "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     String updateSql = "UPDATE rooms SET status='Occupied' WHERE room_number=?";
 
@@ -324,15 +292,11 @@ public class CustomerBooking extends javax.swing.JFrame {
             pstInsert.setString(6, email);
             pstInsert.setString(7, idProof);
             pstInsert.setString(8, address);
-
-            // ✅ Store as TEXT in SQLite
             pstInsert.setString(9, checkinStr);
-            pstInsert.setString(10, checkoutStr);
-
-            pstInsert.setString(11, bed);
-            pstInsert.setString(12, roomType);
-            pstInsert.setDouble(13, Double.parseDouble(price));
-            pstInsert.setString(14, "CHECKED IN");
+            pstInsert.setString(10, bed);
+            pstInsert.setString(11, roomType);
+            pstInsert.setDouble(12, Double.parseDouble(price));
+            pstInsert.setString(13, "CHECKED IN");
 
             pstInsert.executeUpdate();
 
@@ -415,8 +379,6 @@ public class CustomerBooking extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -432,11 +394,11 @@ public class CustomerBooking extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -455,13 +417,12 @@ public class CustomerBooking extends javax.swing.JFrame {
         jTextField5.setText("");
         jTextField6.setText("");
         jTextField7.setText(new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()));
-        jTextField8.setText("");
         jTextField9.setText("");
 
         if (jComboBox5.getItemCount() > 0) jComboBox5.setSelectedIndex(0);
         jComboBox1.setSelectedIndex(0);
-        jComboBox2.setSelectedIndex(0);
-        jComboBox3.setSelectedIndex(0);
+        jTextField10.setText("");
+        jTextField8.setText("");
     }
 
     private void loadRoomNumbers() {
@@ -496,5 +457,27 @@ public class CustomerBooking extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error loading price: " + e.getMessage());
         }
+    }
+        private void loadRoomDetails() {
+    if (jComboBox5.getSelectedItem() == null) return;
+
+    String selectedRoom = jComboBox5.getSelectedItem().toString();
+    String sql = "SELECT price, bed_type, room_type FROM rooms WHERE room_number=?";
+
+    try (Connection conn = DataBaseCon.connectDB();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
+
+        pst.setString(1, selectedRoom);
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                jTextField9.setText(String.valueOf(rs.getDouble("price"))); // Price
+                jTextField10.setText(rs.getString("bed_type"));             // Bed
+                jTextField8.setText(rs.getString("room_type"));             // Room Type
+            }
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error loading room details: " + e.getMessage());
+    }
     }
 }

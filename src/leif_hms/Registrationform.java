@@ -155,59 +155,52 @@ public class Registrationform extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String fname = Fn.getText().trim();
-        String lname = Ln.getText().trim();
-        String email = Em.getText().trim();
-        String password = Ps.getText().trim();
+    String lname = Ln.getText().trim();
+    String email = Em.getText().trim();
+    String password = Ps.getText().trim();
 
-        if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields");
+    if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please fill in all fields");
+        return;
+    }
+
+    try (Connection con = DataBaseCon.connectDB()) {
+
+        if (con == null) {
+            JOptionPane.showMessageDialog(this, "Database connection failed!");
             return;
         }
 
-        try {
-            Connection con = DataBaseCon.connectDB();
+        // Check if email exists
+        String checkEmailSql = "SELECT 1 FROM tbl_users WHERE email = ?";
+        PreparedStatement checkPst = con.prepareStatement(checkEmailSql);
+        checkPst.setString(1, email);
+        ResultSet rs = checkPst.executeQuery();
 
-            if (con == null) {
-                JOptionPane.showMessageDialog(this, "Database connection failed!");
-                return;
-            }
-
-            // CHECK IF EMAIL EXISTS
-            String checkEmailSql = "SELECT 1 FROM tbl_users WHERE email = ?";
-            PreparedStatement checkPst = con.prepareStatement(checkEmailSql);
-            checkPst.setString(1, email);
-            ResultSet rs = checkPst.executeQuery();
-
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "Email already exists!");
-                return;
-            }
-
-            // INSERT USER (MATCH DB COLUMNS)
-            String sql = "INSERT INTO tbl_users "
-            + "(first_name, last_name, email, password, type, status) "
-            + "VALUES (?, ?, ?, ?, ?, ?)";
-
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, fname);
-            pst.setString(2, lname);
-            pst.setString(3, email);
-            pst.setString(4, password);
-            pst.setString(5, "USER");
-            pst.setString(6, "INACTIVE");
-
-            pst.executeUpdate();
-
-            JOptionPane.showMessageDialog(this, "Registered successfully!");
-
-            new LoginPage().setVisible(true);
-            this.dispose();
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Registrationform.class.getName()).log(Level.SEVERE, null, ex);
+        if (rs.next()) {
+            JOptionPane.showMessageDialog(this, "Email already exists!");
+            return;
         }
+
+        // Insert user
+        String sql = "INSERT INTO tbl_users (first_name, last_name, email, password, type, status) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement pst = con.prepareStatement(sql);
+        pst.setString(1, fname);
+        pst.setString(2, lname);
+        pst.setString(3, email);
+        pst.setString(4, password); // must match NOT NULL
+        pst.setString(5, "USER");
+        pst.setString(6, "INACTIVE");
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Registered successfully!");
+        new LoginPage().setVisible(true);
+        this.dispose();
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage());
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked

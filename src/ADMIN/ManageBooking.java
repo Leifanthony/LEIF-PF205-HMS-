@@ -30,11 +30,11 @@
         try {
             DataBaseCon dbc = new DataBaseCon();
 
-                ResultSet rs = dbc.getData(
-            "SELECT id, room_number, name, mobile_no, nationality, gender, email, " +
-            "id_proof, address, checkin_date, checkout_date, bed_type, room_type, price, status " +
-            "FROM customer_checkin"
-                );
+            ResultSet rs = dbc.getData(
+                "SELECT id, room_number, name, mobile_no, nationality, gender, email, " +
+                "id_proof, address, checkin_date, checkout_date, bed_type, room_type, price, status " +
+                "FROM customer_checkin"
+            );
 
             customer_table.setModel(DbUtils.resultSetToTableModel(rs));
             rs.close();
@@ -68,6 +68,8 @@
         search = new javax.swing.JTextField();
         search_button = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(104, 0, 104));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -130,7 +132,7 @@
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 0));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("EDIT");
+        jLabel8.setText("BACK");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -213,6 +215,7 @@
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseEntered
@@ -238,33 +241,38 @@
     private void editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMouseClicked
        int rowIndex = customer_table.getSelectedRow();
 
-    if (rowIndex < 0) {
-        JOptionPane.showMessageDialog(this, "Please select a booking first!");
-        return;
-    }
+        if (rowIndex < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a booking first!");
+            return;
+        }
 
-    String id = customer_table.getValueAt(rowIndex, 0).toString();
-    String currentCheckout = customer_table.getValueAt(rowIndex, 10).toString();
+        // Convert view row to model row (important if table is sorted)
+        rowIndex = customer_table.convertRowIndexToModel(rowIndex);
 
-    String newCheckout = JOptionPane.showInputDialog(
-            this,
-            "Current Checkout: " + currentCheckout +
-            "\nEnter New Checkout Date (YYYY-MM-DD):"
-    );
+        String id = customer_table.getValueAt(rowIndex, 0).toString();
 
-    if (newCheckout == null || newCheckout.trim().isEmpty()) {
-        return;
-    }
+        Object checkoutObj = customer_table.getValueAt(rowIndex, 10);
+        String currentCheckout = (checkoutObj == null) ? "Not Set" : checkoutObj.toString();
 
-    String sql = "UPDATE customer_checkin SET checkout_date = ? WHERE id = ?";
-    boolean updated = DataBaseCon.updateRecord(sql, newCheckout, id);
+        String newCheckout = JOptionPane.showInputDialog(
+                this,
+                "Current Checkout: " + currentCheckout +
+                "\nEnter New Checkout Date (YYYY-MM-DD):"
+        );
 
-    if (updated) {
-        JOptionPane.showMessageDialog(this, "Checkout extended successfully!");
-        displayData();
-    } else {
-        JOptionPane.showMessageDialog(this, "Failed to update booking!");
-    }
+        if (newCheckout == null || newCheckout.trim().isEmpty()) {
+            return;
+        }
+
+        String sql = "UPDATE customer_checkin SET checkout_date = ? WHERE id = ?";
+        boolean updated = DataBaseCon.updateRecord(sql, newCheckout, id);
+
+        if (updated) {
+            JOptionPane.showMessageDialog(this, "Checkout extended successfully!");
+            displayData();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to update booking!");
+        }
     }//GEN-LAST:event_editMouseClicked
 
     private void editMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMouseEntered
@@ -284,11 +292,57 @@ searchTable();
     }//GEN-LAST:event_search_buttonMouseClicked
 
     private void customer_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customer_tableMouseClicked
-        // TODO add your handling code here:
+      int row = customer_table.getSelectedRow();
+
+        if (row < 0) return;
+
+        // Convert view row to model row
+        row = customer_table.convertRowIndexToModel(row);
+
+    String id = customer_table.getValueAt(row, 0).toString();
+    String roomNumber = customer_table.getValueAt(row, 1).toString();
+    Object statusObj = customer_table.getValueAt(row, 14);
+    String status = (statusObj == null) ? "" : statusObj.toString();
+
+    // Only allow checkout if currently CHECKED IN
+    if (!status.equals("CHECKED IN")) {
+        JOptionPane.showMessageDialog(this, "Customer already checked out!");
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Check out this customer now?",
+            "Confirm Checkout",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+
+        String today = new java.text.SimpleDateFormat("yyyy-MM-dd")
+                .format(new java.util.Date());
+
+        try {
+
+            String sql1 = "UPDATE customer_checkin SET checkout_date=?, status='CHECKED OUT' WHERE id=?";
+            String sql2 = "UPDATE rooms SET status='Available' WHERE room_number=?";
+
+            DataBaseCon.updateRecord(sql1, today, id);
+            DataBaseCon.updateRecord(sql2, roomNumber);
+
+            JOptionPane.showMessageDialog(this, "Customer checked out successfully!");
+
+            displayData();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Checkout failed: " + e.getMessage());
+        }
+    }
     }//GEN-LAST:event_customer_tableMouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-
+    this.dispose();                
+    new UserDash1().setVisible(true);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
